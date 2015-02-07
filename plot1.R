@@ -12,15 +12,22 @@
 # 
 # hist(plotdata$Global_active_power,xlab="Global Active Power (kilowatts)",col="red",main="Global Active Power")
 
+
 library("data.table")
+#read only Date and Global active power columns
 data <- fread("household_power_consumption.txt",header=TRUE,sep=";",na.strings="?",select=c("Date","Global_active_power"))
 
+#remove the NA's
 valid <- na.omit(data)
 
+#Subset out the necessary dates, select only Global_active_power
 plotdata <- subset(valid,as.Date(valid$Date) == as.Date("01/02/2007") | as.Date(valid$Date) == as.Date("02/02/2007"),select=Global_active_power  )
 
+#open png file
+png(filename="plot1.png",width=480,height=480,units="px")
+
+#Create Histogram
 hist(as.numeric(plotdata$Global_active_power),xlab="Global Active Power (kilowatts)",col="red",main="Global Active Power")
 
-png(filename="plot1.png",width=480,height=480,units="px")
-hist(as.numeric(plotdata$Global_active_power),xlab="Global Active Power (kilowatts)",col="red",main="Global Active Power")
+#close png file.
 dev.off()
